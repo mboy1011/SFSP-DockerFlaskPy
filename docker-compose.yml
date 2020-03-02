@@ -1,0 +1,29 @@
+version: '2'
+services:
+
+  www:
+    build: www/.
+    ports:
+      - "5000:5000"
+    links:
+      - db
+    depends_on:
+      - db
+
+  db:
+    build: mysql/.
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports: 
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: db_sfsp
+      MYSQL_ROOT_PASSWORD: gcc@2k20~#
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
