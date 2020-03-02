@@ -1,11 +1,113 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Flask + MySQL Docker Example</title>
-  <style>* { font-family: Helvetica, Arial, sans-serif }</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>GCC-SFSP</title>
+    <!-- MaterializeCSS -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/materializecss.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/style.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/materializecss-icons.css')}}">
+    <style>
+        body {
+          display: flex;
+          min-height: 100vh;
+          flex-direction: column;
+        }
+
+        main {
+          flex: 1 0 auto;
+        }
+    </style>
 </head>
 <body>
-  <h1>Flask + MySQL Docker Example</h1>
-  <p>MySQL Connection: {{ result }}</p>
+    <nav>
+    <div class="nav-wrapper green">
+        <a href="#!" class="brand-logo center"><img src="{{ url_for('static',filename='assets/img/gcclogo.png') }}" alt="" style="height: 66px; width: 66px;" class="cirlcle responsive"></a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <ul class="right hide-on-med-and-down">
+          <!-- <li><a href="/windash">Windows Dashboard <i class="material-icons right">developer_board</i></a></li> -->
+        </ul>
+    </div>
+    </nav>
+    <ul class="sidenav" id="mobile-demo">
+      <!-- <li><a href="/windash">Windows Dashboard <i class="material-icons right">developer_board</i></a></li> -->
+    </ul>
+    <div class="container">
+      <div class="row">
+        <div class="col s4"></div>
+        <div class="col s4">
+          <form class="col s12" method="POST" action="/login">
+            <div class="row">
+              <div class="col s12 center">
+                  <!-- <img src="{{ url_for('static',filename='assets/img/gcclogo.png') }}" alt="" style="height: 150px; width: 150px;" class="cirlcle responsive"> -->
+              </div>
+            </div>
+            <div class="row">
+                {% if status %}
+                <div class="card-panel red white-text">
+                  {{status}}<i class="material-icons right">warning</i>
+                </div>
+                {% endif %}
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <input id="text" type="text" class="validate" name='uname'>
+                <label for="text">Username</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <input id="password" type="password" class="validate" name='passwd'>
+                <label for="password">Password</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12">
+                  <button class="waves-effect waves-light btn-large" type="submit">Login</button>
+              </div>
+            </div>
+          </form>
+          </div>
+          <div class="col s4"></div>
+        </div>
+    </div>
+    <footer class="page-footer green">
+      <div class="container">
+        <div class="row">
+          <div class="col l6 s12">
+            <h5 class="white-text">Gingoog City Colleges, Inc.</h5>
+            <p class="grey-text text-lighten-4">Macopa St., Paz Village Subdivision
+              Gingoog City</p>
+            <p class="grey-text text-lighten-4">Call (088) 861 1432 Ext 7385</p>
+          </div>
+          <div class="col l4 offset-l2 s12">
+            <h5 class="white-text">Socail Media</h5>
+            <ul>
+              <li><a class="grey-text text-lighten-3" href="https://www.facebook.com/pg/GingoogCityCollegesInc">Facebook</a></li>
+              <li></li>
+              <li></li>
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-copyright">
+        <div class="container">
+        © 2020 School Faculty & Staff Portal
+        <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+        </div>
+      </div>
+    </footer>
+    <!-- MaterializeCSS -->
+    <script src="{{ url_for('static',filename='assets/js/materialize-css.min.js')}}"></script>
+    <script>
+    M.AutoInit();
+    // let status = '{{status}}';
+    // if(status!=''){
+    //   M.toast({html: status})
+    // }
+    </script>
 </body>
 </html>
