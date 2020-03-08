@@ -8,6 +8,7 @@ import json
 
 #
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'fs0ci3ty'
 # Flask Bcrypt
 bcrypt = Bcrypt(app) #
 candidate = 'secret' #
@@ -27,19 +28,34 @@ class View:
     def login():
         mail = request.form['email']
         passwd = request.form['pass']
-        query = db.execute(f"SELECT u_email, u_pass FROM tbl_user_accounts WHERE u_email='{mail}'")
+        query = db.execute(f"SELECT u_email, u_pass,u_type FROM tbl_user_accounts WHERE u_email='{mail}'")
         result = query.fetchone()
-        hashed = result[1]
-        # pw_hash = bcrypt.generate_password_hash(passwd)
-        if bcrypt.check_password_hash(hashed, passwd):
-            return f'''Matched!'''
+        if result:
+            hashed = result[1]
+            # pw_hash = bcrypt.generate_password_hash(passwd)
+            if bcrypt.check_password_hash(hashed, passwd):
+                session['userType'] = result[2]
+                session['userEmail'] = result[0]
+                return redirect('/admin')
+            else:
+                return f'''Invalid Username/Password!'''
         else:
-            return f'''Not matched!'''
+            return f'''Not yet Registered!'''
         # return f'''{pw_hash}'''
         # hashed
     @app.route('/admin')
     def admin():
-        return render_template('admin.html')
+        if 'userType' in session:
+            if session['userType']==1:
+                return render_template('admin.html')
+            else:
+                return redirect('/')
+        else:
+            return redirect('/')
+    @app.route('/logout')
+    def logout():
+        session.clear()
+        return redirect('/')
 
 if __name__ == "__main__":
     View()

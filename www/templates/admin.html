@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Admin Dashboard</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{{ url_for('static',filename='assets/icon/favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static',filename='assets/icon/favicon.ico') }}" type="image/x-icon">
     <!-- MaterializeCSS -->
     <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/materializecss.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/style.css')}}">
@@ -43,8 +46,8 @@
                 <img src="{{url_for('static',filename='assets/img/bg.jpg')}}" alt="" style="width:100%;">
                 </div>
                 <a href="#user"><img class="circle" src="{{ url_for('static',filename='assets/img/gcclogo.png')}}"></a>
-                <a href="#name"><span class="white-text name">Admin</span></a>
-                <a href="#email"><span class="white-text email">admin@gcc.com</span></a>
+                <a href="#name"><span class="white-text name"></span></a>
+                <a href="#email"><span class="white-text email">{{session['userEmail']}}</span></a>
             </div>
             </li>
             <!-- <ul class="collapsible">
