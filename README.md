@@ -1,10 +1,14 @@
-## GCC-SFSP
+# ![GCC-SFSP](https://github.com/mboy1011/SFSP-DockerFlaskPy/blob/master/www/static/assets/img/gcclogo.png)
 It's a School Faculty & Staff Portal System that uses Docker, Flask, and Python3 to build this project for the Gingoog City Colleges, Inc.
 
 ## Pre-requisite
-> * Basic understanding on how Docker works.
-> * Basic knowledge of Programming with Python3 & Flask.
+> * Basic knowlege to Programming (Python3, JavaScript)
+> * Basic knowledge to PaaS (Docker) 
+
+## Requirements:
+[![Docker](https://lh3.googleusercontent.com/proxy/Ap-MyjwOxTTRSdaDEvwPbFVmMgzulZkEnEmj3kjrulMFjNR23dpdqyV7sLFXLoRUd_Md78uSaIzWJnGiGsgmvOeRghsXEfp9S0BcEchvhuKUsyiDUpsX1dGcST4lNcw6OsxjrkVobtWy)](https://www.docker.com/products/docker-desktop)
 
 ## Installation
 1. Download this repository: <code>git clone https://github.com/mboy1011/SFSP-DockerFlaskPy.git 
+
 2. Build & Run this project using docker command: <code>docker-compose up --build</code>
