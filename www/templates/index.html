@@ -25,18 +25,18 @@
     </style>
 </head>
 <body>
-    <nav>
+    <!-- <nav>
     <div class="nav-wrapper green">
         <a href="#!" class="brand-logo center"><img src="{{ url_for('static',filename='assets/img/gcclogo.png') }}" alt="" style="height: 66px; width: 66px;" class="cirlcle responsive"></a>
         <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-        <ul class="right hide-on-med-and-down">
+        <ul class="right hide-on-med-and-down"> -->
           <!-- <li><a href="/windash">Windows Dashboard <i class="material-icons right">developer_board</i></a></li> -->
-        </ul>
+        <!-- </ul>
     </div>
     </nav>
-    <ul class="sidenav" id="mobile-demo">
+    <ul class="sidenav" id="mobile-demo"> -->
       <!-- <li><a href="/windash">Windows Dashboard <i class="material-icons right">developer_board</i></a></li> -->
-    </ul>
+    <!-- </ul> -->
     <main>
       <br>
       <center>
@@ -45,7 +45,17 @@
           <form class="col s12" method="post" action="/login">
             <div class='row'>
               <div class='col s12'>
-                <h3 class="green-text"><i class="green-text medium material-icons left">account_box</i></h3>
+                <h3 class="green-text">
+                  <!-- <i class="green-text medium material-icons left">account_box</i> -->
+                  <img src="{{ url_for('static',filename='assets/img/gcclogo.png') }}" alt="" style="height: 80px; width: 80px;" class="cirlcle responsive">
+                </h3>
+              </div>
+              <div class="col s12">
+                {% if status %}
+                <div class="card-panel red white-text">
+                  {{status}}<i class="material-icons right">warning</i>
+                </div>
+                {% endif %}
               </div>
             </div>
 

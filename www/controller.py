@@ -30,6 +30,8 @@ class View:
         passwd = request.form['pass']
         query = db.execute(f"SELECT u_email, u_pass,u_type FROM tbl_user_accounts WHERE u_email='{mail}'")
         result = query.fetchone()
+        # pw_hash = bcrypt.generate_password_hash(passwd)
+        # return f"{pw_hash}"
         if result:
             hashed = result[1]
             # pw_hash = bcrypt.generate_password_hash(passwd)
@@ -38,11 +40,11 @@ class View:
                 session['userEmail'] = result[0]
                 return redirect('/admin')
             else:
-                return f'''Invalid Username/Password!'''
+                status = "Invalid Username/Password!"
+                return render_template('index.html',status=status)
         else:
-            return f'''Not yet Registered!'''
-        # return f'''{pw_hash}'''
-        # hashed
+            status = "Invalid Username/Password!"
+            return render_template('index.html',status=status)
     @app.route('/admin')
     def admin():
         if 'userType' in session:
