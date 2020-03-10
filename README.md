@@ -14,3 +14,6 @@ It's a School Faculty & Staff Portal System that uses Docker, Flask, and Python3
     <br>Windows: <code>choco install docker docker-compose docker-desktop -y </code>
     <br>Linux: <code>apt install docker docker-compose -y </code>
 3. Build & Run this project using docker command: <code>docker-compose up --build</code>
+
+![CI](https://github.com/mboy1011/SFSP-DockerFlaskPy/workflows/CI/badge.svg)
+[![License](https://img.shields.io/apm/l/vim-mode.svg)](https://github.com/mboy1011/SFSP-DockerFlaskPy.git)
