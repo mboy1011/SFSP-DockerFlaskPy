@@ -12,6 +12,7 @@ It's a School Faculty & Staff Portal System that uses Docker, Flask, and Python3
 1. Download this repository: <code>git clone https://github.com/mboy1011/SFSP-DockerFlaskPy.git .
 2. Install Docker:
     <br>Windows: <code>choco install docker docker-compose docker-desktop -y </code>
+    <br>Windows: <code>brew install docker docker-compose docker-desktop</code>
     <br>Linux: <code>apt install docker docker-compose -y </code>
 3. Build & Run this project using docker command: <code>docker-compose up --build</code>
 
