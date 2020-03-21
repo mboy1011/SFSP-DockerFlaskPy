@@ -15,7 +15,7 @@ candidate = 'secret' #
 # IP
 ip = ni.ifaddresses('eth0')[ni.AF_INET][0]['addr'] # Linux 
 # DB
-engine = create_engine('mysql+mysqldb://root:gcc@2k20~#@db:3306/db_sfsp',pool_size=1000, max_overflow=0)
+engine = create_engine('mysql+mysqldb://root:gcc@2k20~#@db:6033/db_sfsp',pool_size=1000, max_overflow=0)
 db = scoped_session(sessionmaker(bind=engine))
 # Views
 class View:  
