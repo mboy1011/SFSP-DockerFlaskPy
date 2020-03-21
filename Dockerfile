@@ -1,5 +1,4 @@
 # A simple Flask app container.
-FROM mysql:5.7
 FROM python:3-buster
 LABEL maintainer="Lyjieme Barro"
 

@@ -11,6 +11,7 @@ services:
     volumes: ['./www/:/opt/www'] # Code Reload
     command: python3 controller.py # Production Code: python3 wsgi.py
   db:
+    image: mysql:5.7
     command: [mysqld, --default-authentication-plugin=mysql_native_password]
     restart: always
     ports: 
