@@ -1,8 +1,7 @@
 version: '2'
 services:
-
   www:
-    build: www/.
+    build: .
     ports:
       - "5000:5000"
     links:
@@ -10,15 +9,16 @@ services:
     depends_on:
       - db
     volumes: ['./www/:/opt/www'] # Code Reload
-
+    command: python3 controller.py # Production Code: python3 wsgi.py
   db:
-    build: mysql/.
-    command: --default-authentication-plugin=mysql_native_password
+    command: [mysqld, --default-authentication-plugin=mysql_native_password]
     restart: always
     ports: 
       - "3306:3306" # MySQL Port
+    volumes: 
+      - ./db:/docker-entrypoint-initdb.d
     environment:
-      MYSQL_DATABASE: db_sfsp
+      # MYSQL_DATABASE: db_sfsp
       MYSQL_ROOT_PASSWORD: gcc@2k20~#
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
