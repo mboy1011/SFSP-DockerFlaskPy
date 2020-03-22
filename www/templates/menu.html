@@ -1,0 +1,29 @@
+<div class="navbar-fixed">
+    <nav>
+    <div class="nav-wrapper white">
+        <a href="#!" class="brand-logo center green-text"><img src="{{ url_for('static',filename='assets/img/gcclogo.png') }}" alt="" style="height: 66px; width: 66px;" class="cirlcle responsive"></a>
+        <a href="#" data-target="slide-out" class="sidenav-trigger green-text"><i class="material-icons">menu</i></a>
+        <ul id="nav-mobile" class="left hide-on-med-and-down green-text">
+            <li><a href="#" id="menu" class="green-text"><i class="material-icons green-text">menu</i></a></li>
+        </ul>
+    </div>
+    </nav>
+</div>
+<ul id="slide-out" class="sidenav sidenav-fixed green darken-2">
+    <li>
+    <div class="user-view">
+        <div class="background">
+        <img src="{{url_for('static',filename='assets/img/bg.jpg')}}" alt="" style="width:100%;">
+        </div>
+        <a href="#user"><img class="circle" src="{{ url_for('static',filename='assets/img/gcclogo.png')}}"></a>
+        <a href="#name"><span class="white-text name"></span></a>
+        <a href="#email"><span class="white-text email">{{session['userEmail']}}</span></a>
+    </div>
+    </li>   
+    <li {% if request.path == "/admin"%} class="active" {% endif %}><a href="/admin" class="white-text">Home <i class="material-icons right white-text">home</i></a></li>
+    <li {% if request.path == "/users"%} class="active" {% endif %}><a href="/users" class="white-text">User Accounts <i class="material-icons right white-text">supervisor_account</i></a></li>
+    <li><a href="/staff" class="white-text">Staff <i class="material-icons right white-text">assignment_ind</i></a></li>
+    <li><a href="/dept" class="white-text">Department <i class="material-icons right white-text">business</i></a></li>
+    <li><a href="/settings" class="white-text">Settings <i class="material-icons right white-text">settings</i></a></li>
+    <li><a href="/logout" class="white-text">Logout<i class="material-icons right white-text">logout</i></a></li>
+</ul>

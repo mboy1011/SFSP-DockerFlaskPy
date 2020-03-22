@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>User Accounts</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{{ url_for('static',filename='assets/icon/favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static',filename='assets/icon/favicon.ico') }}" type="image/x-icon">
+    <!-- MaterializeCSS -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/materializecss.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/style.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/materializecss-icons.css')}}">
+    <!-- jQueryMaterializeCSS -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/jq-data-material.css')}}">
+    
+    <style>
+      header, main, footer {
+        padding-left: 300px;
+      }
+
+      @media only screen and (max-width : 1024px) {
+        header, main, footer {
+          padding-left: 0;
+        }
+      }
+    </style>
+</head>
+<body>
+    <header>
+        {% include "menu.html" %}        
+    </header>
+    <main>
+    <div class="row">
+    <div id="man" class="col s12">
+    <div class="card material-table">
+        <div class="table-header">
+          <span class="table-title">User Accounts</span>
+          <div class="actions">
+              <a class="waves-effect waves-effect btn-flat modal-trigger nopadding" href="#dupdate"><i class="material-icons">delete</i></a>
+            <a href="#insertModal" class="modal-trigger waves-effect btn-flat nopadding"><i class="material-icons">person_add</i></a>
+            <a href="#" class="search-toggle waves-effect btn-flat nopadding"><i class="material-icons">search</i></a>
+          </div>
+        </div>
+        <table id="datatable" class="responsive-table">
+          <thead>
+              <tr>
+                  <th>
+                    <label>
+                      <input type="checkbox" id="mChBx" />
+                      <span>Select All</span>
+                    </label>
+                  </th>
+                  <th>ID</th>
+                  <th>Username</th>
+                  <th>Password</th>
+                  <th>Type</th>
+                  <th>Date Added</th>
+                  <th>Action</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for row in data %}
+              <tr>
+                <td>
+                  <label>
+                    <input type="checkbox" class="chBx" data-id="{{row[0]}}" />
+                    <span></span>
+                  </label>
+                </td>
+                <td>{{row[0]}}</td>
+                <td>{{row[1]}}</td>
+                <td>{{row[2]}}</td>
+                <td>
+                    {% if row[3]==1 %}
+                    Admin
+                    {% else %}
+                    User
+                    {% endif%}
+                </td>
+                <td>{{row[4]}}</td>
+                <td>
+                  <a class="waves-effect waves-light btn modal-trigger orange" href="#mupdate"><i class="material-icons white-text">edit</i></a>
+                  
+                </td>
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+      <!-- Modals -->
+      <div id="mupdate" class="modal">
+        <div class="modal-content">
+          <h4>Update User Accounts</h4>
+        </div>
+        <div class="modal-footer">
+          <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+        </div>
+      </div>
+      <div id="dupdate" class="modal">
+        <div class="modal-content">
+          <h4>Delete User Accounts</h4>
+        </div>
+        <div class="modal-footer">
+          <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+        </div>
+      </div>
+       <!-- Modal Structure -->
+      <div id="insertModal" class="modal modal-fixed-footer">
+      <form method="POST" action="/addUA">
+        <div class="modal-content">
+          <h4>Add User Accounts</h4>
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="first_name" type="text" name="uname" class="validate" required>
+              <label for="first_name">Username</label>
+            </div>
+            <div class="input-field col s12">
+              <input id="password" type="password" name="passwd" class="validate" required>
+              <label for="password">Password</label>
+            </div>
+            <div class="input-field col s6">
+              <select name="staffid">
+                {% for row in staff %}
+                <option value="{{row[0]}}">{{row[4]}}, {{row[2]}}</option>
+                {% endfor %}
+              </select>
+              <label>Staff</label>
+            </div>
+            <div class="input-field col s6">
+              <select name="utype">
+                <option value="1">User</option>
+                <option value="0">Admin</option>
+              </select>
+              <label>User Type</label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer green">
+          <button class="white-text btn blue waves-effect waves-blue btn-flat" type="submit" name="addUA">Submit <i class="material-icons right">send</i></button>
+          <button class="white-text modal-close btn red waves-effect waves-red btn-flat">Cancel</button>
+        </div>
+      </form>
+      </div>
+    </div>
+    </div>
+    </div>
+    </main>
+    <footer class="page-footer green">
+    {% include 'footer.html' %}
+    </footer>
+    <!-- MaterializeCSS -->
+    <script src="{{ url_for('static',filename='assets/js/materialize-css.min.js')}}"></script>
+    <!-- jQueryMaterilizeCSS -->
+    <script src="{{ url_for('static',filename='assets/js/jquery.min.js')}}"></script>
+    <script src="{{ url_for('static',filename='assets/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ url_for('static',filename='assets/js/jq-data-material.js')}}"></script>
+    <script>
+      // SideNav
+    let slout = document.querySelector("#slide-out");
+    let men = document.querySelector("#menu");
+    men.addEventListener('click',()=>{
+      if(slout.M_Sidenav.isOpen == false){
+        slout.M_Sidenav.open(); 
+        document.getElementsByTagName('footer')[0].style.paddingLeft = "300px";
+        document.getElementsByTagName('main')[0].style.paddingLeft = "300px";
+        document.getElementsByTagName('header')[0].style.paddingLeft = "300px";
+      }else if(slout.M_Sidenav.isOpen == true){
+        slout.M_Sidenav.close();
+        console.log(slout.M_Sidenav.isDragged)
+        document.getElementsByTagName('footer')[0].style.paddingLeft = 0;
+        document.getElementsByTagName('main')[0].style.paddingLeft = 0;
+        document.getElementsByTagName('header')[0].style.paddingLeft = 0;
+      }
+    })
+    // EndSideNav
+    M.AutoInit();
+    // CheckBox
+    let mChBx = document.querySelector("#mChBx");
+      let chBx = document.querySelectorAll(".chBx");
+      mChBx.addEventListener('click',function(){
+        if(mChBx.checked == true){
+          for (let i = 0; i < chBx.length; i++) {
+            chBx[i].checked = true;            
+          }
+        }else{
+          for (let i = 0; i < chBx.length; i++) {
+            chBx[i].checked = false;            
+          }
+        }
+      });
+      var check = (e)=>{
+        for (let i = 0; i < chBx.length; i++) {
+          if(chBx[i].checked == true){
+            console.log(chBx[i].dataset.id);
+          }          
+        }
+      }
+    // 
+    </script>
+</body>
+</html>

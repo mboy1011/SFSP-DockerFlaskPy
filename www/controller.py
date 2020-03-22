@@ -58,7 +58,17 @@ class View:
     def logout():
         session.clear()
         return redirect('/')
-
+    @app.route('/users')
+    def users():
+        if 'userType' in session:
+            if session['userType']==1:
+                query = db.execute("SELECT * FROM tbl_user_accounts")
+                data = query.fetchall()
+                return render_template('user.html',data=data)
+            else:
+                return redirect('/')
+        else:
+            return redirect('/')
 if __name__ == "__main__":
     View()
     # Flask
