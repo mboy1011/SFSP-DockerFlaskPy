@@ -4,13 +4,19 @@ from www import db, bcrypt
 abv = Blueprint('admin',__name__,template_folder='templates/admin')
 
 class Admin():
-    @abv.route('/')    
+    @abv.route('/')
     def index():
         # return f'''{status}'''
-        return render_template('index.html')
+        if 'userType' in session:
+            if session['userType']==1:
+                return redirect('/admin/dashboard')
+            else:
+                return render_template('index.html')
+        else:
+            return render_template('index.html')
 
-    @abv.route('/login',methods=['POST'])
-    def login():
+    @abv.route('/admin/login',methods=['POST'])
+    def admin_login():
         mail = request.form['email']
         passwd = request.form['pass']
         query = db.execute(f"SELECT u_email, u_pass,u_type FROM tbl_user_accounts WHERE u_email='{mail}'")
@@ -23,14 +29,14 @@ class Admin():
             if bcrypt.check_password_hash(hashed, passwd):
                 session['userType'] = result[2]
                 session['userEmail'] = result[0]
-                return redirect('/admin')
+                return redirect('/admin/dashboard')
             else:
                 status = "Invalid Username/Password!"
                 return render_template('index.html',status=status)
         else:
             status = "Invalid Username/Password!"
             return render_template('index.html',status=status)
-    @abv.route('/admin')
+    @abv.route('/dashboard')
     def admin():
         if 'userType' in session:
             if session['userType']==1:
@@ -42,7 +48,7 @@ class Admin():
     @abv.route('/logout')
     def logout():
         session.clear()
-        return redirect('/')
+        return redirect('/admin')
     @abv.route('/users')
     def users():
         if 'userType' in session:

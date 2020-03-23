@@ -20,10 +20,10 @@
         <a href="#email"><span class="white-text email">{{session['userEmail']}}</span></a>
     </div>
     </li>   
-    <li {% if request.path == "/admin"%} class="active" {% endif %}><a href="/admin" class="white-text">Home <i class="material-icons right white-text">home</i></a></li>
-    <li {% if request.path == "/users"%} class="active" {% endif %}><a href="/users" class="white-text">User Accounts <i class="material-icons right white-text">supervisor_account</i></a></li>
-    <li><a href="/staff" class="white-text">Staff <i class="material-icons right white-text">assignment_ind</i></a></li>
-    <li><a href="/dept" class="white-text">Department <i class="material-icons right white-text">business</i></a></li>
-    <li><a href="/settings" class="white-text">Settings <i class="material-icons right white-text">settings</i></a></li>
-    <li><a href="/logout" class="white-text">Logout<i class="material-icons right white-text">logout</i></a></li>
+    <li {% if request.path == "/admin"%} class="active" {% endif %}><a href="/admin/dashboard" class="white-text">Home <i class="material-icons right white-text">home</i></a></li>
+    <li {% if request.path == "/users"%} class="active" {% endif %}><a href="/admin/users" class="white-text">User Accounts <i class="material-icons right white-text">supervisor_account</i></a></li>
+    <li><a href="/admin/staff" class="white-text">Staff <i class="material-icons right white-text">assignment_ind</i></a></li>
+    <li><a href="/admin/dept" class="white-text">Department <i class="material-icons right white-text">business</i></a></li>
+    <li><a href="/admin/settings" class="white-text">Settings <i class="material-icons right white-text">settings</i></a></li>
+    <li><a href="/admin/logout" class="white-text">Logout<i class="material-icons right white-text">logout</i></a></li>
 </ul>
