@@ -101,7 +101,8 @@ class Admin():
     def users():
         if 'userType' in session:
             if session['userType']==1:
-                return render_template('user.html')
+                data = db.execute("SELECT * FROm tbl_user_accounts").fetchall()
+                return render_template('user.html',data=data)
             else:
                 return redirect('/')
         else:
