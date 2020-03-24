@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <title>Maintenance</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{{ url_for('static',filename='assets/icon/favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static',filename='assets/icon/favicon.ico') }}" type="image/x-icon">
+    <!-- Material Icon CDN -->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Materialize CSS CDN -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <!-- Your custom styles -->
+      <link rel="stylesheet" href="css/style.css">
+    <!-- Used as an example only to position the footer at the end of the page.
+    You can delete these styles or move it to your custom css file -->
+    <style>
+      body {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+        }
+      main {
+        flex: 1 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      
+    </header>
+    <main>
+      <div class="row">
+        <h4 class="center"><i class="material-icons large orange-text">build</i></h4>
+        <h3 class="center orange-text">Sorry, off for maintenance!</h3>
+        <h2 class="flow-text center green-text">We will fix this issue right away.</h2>
+      </div>
+    </main>
+    <footer class="page-footer green">
+      {% include 'footer.html' %}
+    </footer>
+    <!-- Materialize JS CDN -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script>
+      M.AutoInit();
+    </script>
+  </body>
+</html>

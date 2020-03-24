@@ -1,3 +1,4 @@
 .vscode
 .github
-.__pycache__
+./__pycache__
+./www/__pycache__
