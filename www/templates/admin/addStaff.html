@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Add Staff</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{{ url_for('static',filename='assets/icon/favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static',filename='assets/icon/favicon.ico') }}" type="image/x-icon">
+    <!-- MaterializeCSS -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/materializecss.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/style.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/materializecss-icons.css')}}">
+    <!-- jQueryMaterializeCSS -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/jq-data-material.css')}}">
+    
+    <style>
+      header, main, footer {
+        padding-left: 300px;
+      }
+
+      @media only screen and (max-width : 1024px) {
+        header, main, footer {
+          padding-left: 0;
+        }
+      }
+    </style>
+</head>
+<body>
+    <header>
+        {% include "menu.html" %}        
+    </header>
+    <main>
+    <div class="container">
+    <div class="row">
+      <form method="POST" action="/admin/addSA">
+        <div class="input-field col s12">
+            <p class="flow-text green-text"><i class="material-icons medium left">person_add</i></p>
+        </div>
+        <div class="row">          
+            <div class="col s12">
+                <p class="flow-text green-text left">Name</p>
+            </div>
+            <div class="input-field col s5">
+                <input id="first_name" type="text" name="fname" class="validate" required>
+                <label for="first_name">First Name</label>
+            </div>
+            <div class="input-field col s5">
+                <input id="last_name" type="text" name="lname" class="validate" required>
+                <label for="last_name">Last Name</label>
+            </div>
+            <div class="input-field col s2">
+                <input id="middle_name" type="text" name="mname" class="validate" required>
+                <label for="middle_name">Middle Initial</label>
+            </div>
+            <div class="col s12">
+                <p class="flow-text green-text left">Address</p>
+            </div>          
+            <div class="input-field col s12">
+                <select id="regCode" name="regCode">
+                    {% for row in reg %}
+                    <option value="{{row[3]}}">{{row[2]}}</option>
+                    {% endfor %}
+                </select>
+                <label>Region</label>
+            </div>
+            <div class="input-field col s12">
+                <select id="provCode" name="provCode">
+                    
+                </select>
+                <label>Province</label>
+            </div>
+            <div class="input-field col s6">
+                <select id="citymunCode" name="citymunCode">
+                    
+                </select>
+                <label>Municipality</label>
+            </div>
+            <div class="input-field col s6">
+                <select id="brgyCode" name="brgyCode">
+                    
+                </select>
+                <label>Barangay</label>
+            </div>
+            <div class="input-field col s6">
+                <input id="bday" type="text" name="dob" class="datepicker">
+                <label for="bday">Birthdate</label>
+            </div>
+            <div class="input-field col s6">
+                <input id="dayH" type="text" name="dh" class="datepicker">
+                <label for="dayH">Date Hired</label>
+            </div>
+        </div>
+        <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+            <i class="material-icons right">send</i>
+        </button>
+      </form>
+      </div>
+    </div>
+    </main>
+    <footer class="page-footer green">
+    {% include 'footer.html' %}
+    </footer>
+    <!-- MaterializeCSS -->
+    <script src="{{ url_for('static',filename='assets/js/materialize-css.min.js')}}"></script>
+    <!-- jQueryMaterilizeCSS -->
+    <script src="{{ url_for('static',filename='assets/js/jquery.min.js')}}"></script>
+    <script src="{{ url_for('static',filename='assets/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ url_for('static',filename='assets/js/jq-data-material.js')}}"></script>
+    <!-- Axios -->
+    <script src="{{ url_for('static',filename='assets/js/axios.min.js')}}"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.datepicker');
+        options = {'format':'yyyy/mm/dd'}
+        var instances = M.Datepicker.init(elems, options);
+    });
+      // SideNav
+    let slout = document.querySelector("#slide-out");
+    let men = document.querySelector("#menu");
+    men.addEventListener('click',()=>{
+      if(slout.M_Sidenav.isOpen == false){
+        slout.M_Sidenav.open(); 
+        document.getElementsByTagName('footer')[0].style.paddingLeft = "300px";
+        document.getElementsByTagName('main')[0].style.paddingLeft = "300px";
+        document.getElementsByTagName('header')[0].style.paddingLeft = "300px";
+      }else if(slout.M_Sidenav.isOpen == true){
+        slout.M_Sidenav.close();
+        console.log(slout.M_Sidenav.isDragged)
+        document.getElementsByTagName('footer')[0].style.paddingLeft = 0;
+        document.getElementsByTagName('main')[0].style.paddingLeft = 0;
+        document.getElementsByTagName('header')[0].style.paddingLeft = 0;
+      }
+    })
+    // EndSideNav
+    M.AutoInit();
+    // Municipality ChangeEvent
+    let mun = document.querySelector("#citymunCode");
+    mun.addEventListener('change',()=>{
+        axios.post('/admin/barangay',{
+            citymunCode: mun.options[mun.selectedIndex].value
+        }).then((response)=>{
+            let obj = response.data;
+            let barangay = document.querySelector("#brgyCode");
+            barangay.M_FormSelect.$selectOptions.empty();
+            barangay.M_FormSelect.$selectOptions.remove();
+            for (let i = 0; i < obj.length; i++) {
+                console.log(obj[i].brgyDesc);
+                let opt = document.createElement("option");
+                opt.text = obj[i].brgyDesc;
+                opt.value = obj[i].brgyCode;
+                barangay.options.add(opt);
+            }
+            // Load Form Select MaterializeCSS
+            var elems = document.querySelectorAll('select');
+            M.FormSelect.init(elems);
+        }).catch((error)=>{
+            console.log(error)
+        })
+    })
+    // Province ChangeEvent
+    let prov = document.querySelector("#provCode");
+    prov.addEventListener('change',()=>{
+        axios.post('/admin/municipality',{
+            provCode:prov.options[prov.selectedIndex].value
+        }).then((response)=>{
+            let obj = response.data;
+            let municipality = document.querySelector("#citymunCode");
+            municipality.M_FormSelect.$selectOptions.empty();
+            municipality.M_FormSelect.$selectOptions.remove();
+            for (let i = 0; i < obj.length; i++) {
+                console.log(obj[i].citymunDesc);
+                let opt = document.createElement("option");
+                opt.text = obj[i].citymunDesc;
+                opt.value = obj[i].citymunCode;
+                municipality.options.add(opt); 
+            }
+            // Load Form Select MaterializeCSS
+            var elems = document.querySelectorAll('select');
+            M.FormSelect.init(elems);
+        }).catch((error)=>{
+            console.log(error);
+        })
+    })
+
+    //  
+    // Region ChangeEvent
+    let reg = document.querySelector("#regCode");
+    reg.addEventListener('change',function(){
+        axios.post('/admin/province',{
+            regCode: reg.options[reg.selectedIndex].value
+        }).then((response)=>{
+            // console.log(response);
+            let obj = response.data;
+            let province = document.querySelector("#provCode");
+            province.M_FormSelect.$selectOptions.empty();
+            province.M_FormSelect.$selectOptions.remove();
+            for(let i=0;i<obj.length;i++){
+                console.log(obj[i].provDesc);
+                let opt = document.createElement("option");
+                opt.text = obj[i].provDesc;
+                opt.value = obj[i].provCode;
+                province.options.add(opt);    
+            }
+            province.M_FormSelect.onchange;
+            // Load Form Select MaterializeCSS
+            var elems = document.querySelectorAll('select');
+            M.FormSelect.init(elems);
+        }).catch((error)=>{
+            console.log(error);
+        });
+    })
+    // 
+    </script>
+</body>
+</html>

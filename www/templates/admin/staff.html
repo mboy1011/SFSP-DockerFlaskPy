@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Staff</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{{ url_for('static',filename='assets/icon/favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static',filename='assets/icon/favicon.ico') }}" type="image/x-icon">
+    <!-- MaterializeCSS -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/materializecss.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/style.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/materializecss-icons.css')}}">
+    <!-- jQueryMaterializeCSS -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/jq-data-material.css')}}">
+    
+    <style>
+      header, main, footer {
+        padding-left: 300px;
+      }
+
+      @media only screen and (max-width : 1024px) {
+        header, main, footer {
+          padding-left: 0;
+        }
+      }
+    </style>
+</head>
+<body>
+    <header>
+        {% include "menu.html" %}        
+    </header>
+    <main>
+    <div class="row">
+        <div id="man" class="col s12">
+            <div class="card material-table">
+                <div class="table-header">
+                <span class="table-title">Staff</span>
+                <div class="actions">
+                    <a class="waves-effect waves-effect btn-flat modal-trigger nopadding" href="#dupdate"><i class="material-icons">delete</i></a>
+                    <a href="/admin/addStaff" class="waves-effect btn-flat nopadding"><i class="material-icons">person_add</i></a>
+                    <a href="#" class="search-toggle waves-effect btn-flat nopadding"><i class="material-icons">search</i></a>
+                </div>
+                </div>
+                <table id="datatable" class="responsive-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <label>
+                                <input type="checkbox" id="mChBx" />
+                                <span>Select All</span>
+                                </label>
+                            </th>
+                            <th>ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Middle Name</th>
+                            <th>Address</th>
+                            <th>Birthdate</th>
+                            <th>Date Hired</th>
+                            <th>Date Created</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in data %}
+                        <tr>
+                            <td>
+                            <label>
+                                <input type="checkbox" class="chBx" data-id="{{row[0]}}" />
+                                <span></span>
+                            </label>
+                            </td>
+                            <td>{{row[0]}}</td>
+                            <td>{{row[1]}}</td>
+                            <td>{{row[2]}}</td>
+                            <td>{{row[3]}}</td>
+                            <td>{{row[4]}}</td>
+                            <td>{{row[5]}}</td>
+                            <td>{{row[6]}}</td>
+                            <td>{{row[7]}}</td>
+                            <td>
+                            <a class="waves-effect waves-light btn modal-trigger orange" href="#mupdate"><i class="material-icons white-text">edit</i></a>
+                            
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <!-- Modals -->
+                <div id="mupdate" class="modal">
+                    <div class="modal-content">
+                        <h4>Update User Accounts</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+                    </div>
+                </div>
+                <div id="dupdate" class="modal">
+                    <div class="modal-content">
+                        <h4>Delete User Accounts</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </main>
+    <footer class="page-footer green">
+    {% include 'footer.html' %}
+    </footer>
+    <!-- MaterializeCSS -->
+    <script src="{{ url_for('static',filename='assets/js/materialize-css.min.js')}}"></script>
+    <!-- jQueryMaterilizeCSS -->
+    <script src="{{ url_for('static',filename='assets/js/jquery.min.js')}}"></script>
+    <script src="{{ url_for('static',filename='assets/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ url_for('static',filename='assets/js/jq-data-material.js')}}"></script>
+    <!-- Axios -->
+    <script src="{{ url_for('static',filename='assets/js/axios.min.js')}}"></script>
+    <script>
+      // SideNav
+    let slout = document.querySelector("#slide-out");
+    let men = document.querySelector("#menu");
+    men.addEventListener('click',()=>{
+      if(slout.M_Sidenav.isOpen == false){
+        slout.M_Sidenav.open(); 
+        document.getElementsByTagName('footer')[0].style.paddingLeft = "300px";
+        document.getElementsByTagName('main')[0].style.paddingLeft = "300px";
+        document.getElementsByTagName('header')[0].style.paddingLeft = "300px";
+      }else if(slout.M_Sidenav.isOpen == true){
+        slout.M_Sidenav.close();
+        console.log(slout.M_Sidenav.isDragged)
+        document.getElementsByTagName('footer')[0].style.paddingLeft = 0;
+        document.getElementsByTagName('main')[0].style.paddingLeft = 0;
+        document.getElementsByTagName('header')[0].style.paddingLeft = 0;
+      }
+    })
+    // EndSideNav
+    M.AutoInit();
+    // CheckBox
+    let mChBx = document.querySelector("#mChBx");
+      let chBx = document.querySelectorAll(".chBx");
+      mChBx.addEventListener('click',function(){
+        if(mChBx.checked == true){
+          for (let i = 0; i < chBx.length; i++) {
+            chBx[i].checked = true;            
+          }
+        }else{
+          for (let i = 0; i < chBx.length; i++) {
+            chBx[i].checked = false;            
+          }
+        }
+      });
+      let check = (e)=>{
+        for (let i = 0; i < chBx.length; i++) {
+          if(chBx[i].checked == true){
+            console.log(chBx[i].dataset.id);
+          }          
+        }
+      }
+    // Municipality ChangeEvent
+    let mun = document.querySelector("#citymunCode");
+    mun.addEventListener('change',()=>{
+        axios.post('/admin/barangay',{
+            citymunCode: mun.options[mun.selectedIndex].value
+        }).then((response)=>{
+            let obj = response.data;
+            let barangay = document.querySelector("#brgyCode");
+            barangay.M_FormSelect.$selectOptions.empty();
+            barangay.M_FormSelect.$selectOptions.remove();
+            for (let i = 0; i < obj.length; i++) {
+                console.log(obj[i].brgyDesc);
+                let opt = document.createElement("option");
+                opt.text = obj[i].brgyDesc;
+                opt.value = obj[i].brgyCode;
+                barangay.options.add(opt);
+            }
+            // Load Form Select MaterializeCSS
+            var elems = document.querySelectorAll('select');
+            M.FormSelect.init(elems);
+        }).catch((error)=>{
+            console.log(error)
+        })
+    })
+    // Province ChangeEvent
+    let prov = document.querySelector("#provCode");
+    prov.addEventListener('change',()=>{
+        axios.post('/admin/municipality',{
+            provCode:prov.options[prov.selectedIndex].value
+        }).then((response)=>{
+            let obj = response.data;
+            let municipality = document.querySelector("#citymunCode");
+            municipality.M_FormSelect.$selectOptions.empty();
+            municipality.M_FormSelect.$selectOptions.remove();
+            for (let i = 0; i < obj.length; i++) {
+                console.log(obj[i].citymunDesc);
+                let opt = document.createElement("option");
+                opt.text = obj[i].citymunDesc;
+                opt.value = obj[i].citymunCode;
+                municipality.options.add(opt); 
+            }
+            // Load Form Select MaterializeCSS
+            var elems = document.querySelectorAll('select');
+            M.FormSelect.init(elems);
+        }).catch((error)=>{
+            console.log(error);
+        })
+    })
+
+    //  
+    // Region ChangeEvent
+    let reg = document.querySelector("#regCode");
+    reg.addEventListener('change',function(){
+        axios.post('/admin/province',{
+            regCode: reg.options[reg.selectedIndex].value
+        }).then((response)=>{
+            // console.log(response);
+            let obj = response.data;
+            let province = document.querySelector("#provCode");
+            province.M_FormSelect.$selectOptions.empty();
+            province.M_FormSelect.$selectOptions.remove();
+            for(let i=0;i<obj.length;i++){
+                console.log(obj[i].provDesc);
+                let opt = document.createElement("option");
+                opt.text = obj[i].provDesc;
+                opt.value = obj[i].provCode;
+                province.options.add(opt);    
+            }
+            province.M_FormSelect.onchange;
+            // Load Form Select MaterializeCSS
+            var elems = document.querySelectorAll('select');
+            M.FormSelect.init(elems);
+        }).catch((error)=>{
+            console.log(error);
+        });
+    })
+    // 
+    </script>
+</body>
+</html>
