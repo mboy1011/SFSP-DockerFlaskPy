@@ -51,11 +51,28 @@
                 </h3>
               </div>
               <div class="col s12">
-                {% if status %}
-                <div class="card-panel red white-text">
-                  {{status}}<i class="material-icons right">warning</i>
-                </div>
-                {% endif %}
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        {% if category == 'keyerror'%}
+                            <div class="card-panel red white-text">
+                              {{message}}<i class="material-icons left" style="font-size: 2.4rem;">error</i>
+                              <i class="close material-icons">close</i>
+                            </div>
+                        {% elif category == 'warning' %}
+                            <div class="chip orange white-text">
+                              {{message}}<i class="material-icons left" style="font-size: 2.4rem;">warning</i>
+                                <i class="close material-icons">close</i>
+                            </div>
+                        {% else %}
+                        <div class="chip red white-text">
+                          {{message}}<i class="material-icons left" style="font-size: 2.4rem;">error</i>
+                          <i class="close material-icons">close</i>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
               </div>
             </div>
 

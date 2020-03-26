@@ -36,7 +36,34 @@
     <div class="row">
       <form method="POST" action="/admin/addSA">
         <div class="input-field col s12">
-            <p class="flow-text green-text"><i class="material-icons medium left">person_add</i></p>
+            <a href="#" class="green-text flow-text">Register Staff<i class="material-icons left green-text" style="font-size: 2.3rem;">person_add</i></a>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    {% if category == 'keyerror'%}
+                        <div class="card-panel red white-text">
+                            {{message}}<i class="material-icons left" style="font-size: 2.4rem;">error</i>
+                            <i class="close material-icons">close</i>
+                        </div>
+                    {% elif category == 'warning' %}
+                        <div class="chip orange white-text">
+                            {{message}}<i class="material-icons left" style="font-size: 2.4rem;">warning</i>
+                            <i class="close material-icons">close</i>
+                        </div>
+                    {% elif category == 'success' %}
+                    <div class="chip green white-text">
+                        {{message}}<i class="material-icons left" style="font-size: 2.4rem;">check</i>
+                        <i class="close material-icons">close</i>
+                    </div>
+                    {% else %}
+                    <div class="chip red white-text">
+                        {{message}}<i class="material-icons left" style="font-size: 2.4rem;">error</i>
+                        <i class="close material-icons">close</i>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+                {% endif %}
+            {% endwith %}
         </div>
         <div class="row">          
             <div class="col s12">
@@ -59,6 +86,7 @@
             </div>          
             <div class="input-field col s12">
                 <select id="regCode" name="regCode">
+                    <option value="0">Select Region</option>
                     {% for row in reg %}
                     <option value="{{row[3]}}">{{row[2]}}</option>
                     {% endfor %}
@@ -92,9 +120,12 @@
                 <label for="dayH">Date Hired</label>
             </div>
         </div>
-        <button class="btn waves-effect waves-light" type="submit" name="action">Submit
-            <i class="material-icons right">send</i>
-        </button>
+        <div class="input-field col s6">
+            <a href="/admin/staff" class="waves-effect waves-teal btn-flat green-text">Back<i class="material-icons left">arrow_back</i></a>
+        </div>
+        <div class="input-field col s6">
+            <button class="btn waves-effect waves-light right" type="submit" name="action">Submit<i class="material-icons right">send</i></button>
+        </div>
       </form>
       </div>
     </div>
@@ -113,7 +144,7 @@
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         var elems = document.querySelectorAll('.datepicker');
-        options = {'format':'yyyy/mm/dd'}
+        options = {'format':'yyyy/mm/dd','yearRange':50}
         var instances = M.Datepicker.init(elems, options);
     });
       // SideNav
@@ -145,8 +176,12 @@
             let barangay = document.querySelector("#brgyCode");
             barangay.M_FormSelect.$selectOptions.empty();
             barangay.M_FormSelect.$selectOptions.remove();
+            let opt1 = document.createElement("option");
+            opt1.text = 'Select Barangay';
+            opt1.value = 0;
+            barangay.options.add(opt1); 
             for (let i = 0; i < obj.length; i++) {
-                console.log(obj[i].brgyDesc);
+                // console.log(obj[i].brgyDesc);
                 let opt = document.createElement("option");
                 opt.text = obj[i].brgyDesc;
                 opt.value = obj[i].brgyCode;
@@ -169,8 +204,12 @@
             let municipality = document.querySelector("#citymunCode");
             municipality.M_FormSelect.$selectOptions.empty();
             municipality.M_FormSelect.$selectOptions.remove();
+            let opt1 = document.createElement("option");
+            opt1.text = 'Select Municipality';
+            opt1.value = 0;
+            municipality.options.add(opt1); 
             for (let i = 0; i < obj.length; i++) {
-                console.log(obj[i].citymunDesc);
+                // console.log(obj[i].citymunDesc);
                 let opt = document.createElement("option");
                 opt.text = obj[i].citymunDesc;
                 opt.value = obj[i].citymunCode;
@@ -196,8 +235,12 @@
             let province = document.querySelector("#provCode");
             province.M_FormSelect.$selectOptions.empty();
             province.M_FormSelect.$selectOptions.remove();
+            let opt1 = document.createElement("option");
+            opt1.text = 'Select Province';
+            opt1.value = 0;
+            province.options.add(opt1);    
             for(let i=0;i<obj.length;i++){
-                console.log(obj[i].provDesc);
+                // console.log(obj[i].provDesc);
                 let opt = document.createElement("option");
                 opt.text = obj[i].provDesc;
                 opt.value = obj[i].provCode;

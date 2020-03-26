@@ -1,4 +1,4 @@
-from flask import render_template,session,redirect,url_for,request,session,Blueprint
+from flask import render_template,session,redirect,url_for,request,session,Blueprint,flash,escape
 from www import db, bcrypt
 import json
 
@@ -44,19 +44,35 @@ class Admin():
         return f'''{json.dumps(result)}'''
     @abv.route('/addSA',methods=['POST'])
     def addSA():
-        fn = request.form['fname']
-        ln = request.form['lname']
-        mn = request.form['mname']
-        br = request.form['brgyCode']
-        bd = request.form['dob']
-        dhr = request.form['dh']
-        query = db.execute(f"INSERT INTO tbl_staff (st_fname, st_lname, st_mi, bday, date_hired, brgyCode) VALUES ('{fn}','{ln}','{mn}','{bd}','{dhr}','{br}')")
-        db.commit()
-        return '''Success'''
+        fn = escape(request.form['fname'])
+        ln = escape(request.form['lname'])
+        mn = escape(request.form['mname'])
+        br = escape(request.form['brgyCode'])
+        bd = escape(request.form['dob'])
+        dhr = escape(request.form['dh'])
+        result = db.execute(f"SELECT st_fname,st_lname,st_mi FROM tbl_staff WHERE st_fname='{fn}' AND st_lname='{ln}' AND st_mi='{mn}'").fetchone()
+        if result:
+            flash(u"Already Registered",'warning')
+        else:
+            query = db.execute(f"INSERT INTO tbl_staff (st_fname, st_lname, st_mi, bday, date_hired, brgyCode) VALUES ('{fn}','{ln}','{mn}','{bd}','{dhr}','{br}')")
+            db.commit()
+            flash(u"Successfully Registered!",'success')
+        # flash(u"Failed to Register!",'error')
+        return redirect('/admin/addStaff')
+    @abv.route('/delSA',methods=['POST'])
+    def delSA():
+        data = request.get_json(silent=True)
+        ids = data['delData']
+        for i in ids:
+            query = db.execute(f"DELETE FROM tbl_staff WHERE staff_id={i}")
+            db.commit()
+        flash("Successfully Deleted!")    
+        datas = {'status':'ok'}
+        return f'''{json.dumps(dict(datas))}'''
     @abv.route('/login',methods=['POST'])
     def admin_login():
-        mail = request.form['email']
-        passwd = request.form['pass']
+        mail = escape(request.form['email'])
+        passwd = escape(request.form['pass'])
         query = db.execute(f"SELECT u_email, u_pass,u_type FROM tbl_user_accounts WHERE u_email='{mail}'")
         result = query.fetchone()
         # pw_hash = bcrypt.generate_password_hash(passwd)
@@ -69,11 +85,16 @@ class Admin():
                 session['userEmail'] = result[0]
                 return redirect('/admin/dashboard')
             else:
-                status = "Invalid Username/Password!"
-                return render_template('index.html',status=status)
+                flash(u"Invalid Credentials!",'warning')
+                return redirect('/admin')
         else:
-            status = "Invalid Username/Password!"
-            return render_template('index.html',status=status)
+            flash(u"User Not Found!",'error')
+            return redirect('/admin')
+    @abv.errorhandler(KeyError)
+    def key_error(error):
+        # abv.logger.error('Unhandled Exception: %s', (e))
+        flash(u"Something went wrong, please try again!",'keyerror')
+        return f'''<script>window.history.go(-1);</script>'''
     @abv.route('/addStaff')
     def addStaff():
         if 'userType' in session:
