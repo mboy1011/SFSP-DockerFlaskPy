@@ -60,15 +60,17 @@
         {% include "menu.html" %}        
     </header>
     <main>
+   
     <div class="row">
         <div id="man" class="col s12">
             <div class="card material-table">
                 <div class="table-header">
                 <span class="table-title">Staff</span>
                 <div class="actions">
-                    <a class="waves-effect waves-effect btn-flat modal-trigger nopadding" href="#mdelete"><i class="material-icons">delete</i></a>
-                    <a href="/admin/addStaff" class="waves-effect btn-flat nopadding"><i class="material-icons">person_add</i></a>
-                    <a href="#" class="search-toggle waves-effect btn-flat nopadding"><i class="material-icons">search</i></a>
+                  <a href="#importModal" class="waves-effect waves-light btn-flat nopadding modal-trigger">Import<i class="material-icons left">import_export</i></a>
+                  <a class="waves-effect waves-effect btn-flat modal-trigger nopadding" href="#mdelete"><i class="material-icons">delete</i></a>
+                  <a href="/admin/addStaff" class="waves-effect btn-flat nopadding"><i class="material-icons">person_add</i></a>
+                  <a href="#" class="search-toggle waves-effect btn-flat nopadding"><i class="material-icons">search</i></a>
                 </div>
                 </div>
                 <table id="datatable" class="responsive-table">
@@ -117,6 +119,30 @@
                     </tbody>
                 </table>
                 <!-- Modals -->
+                <!-- Modal Structure -->
+                <div id="importModal" class="modal">
+                  <div class="modal-content">
+                    <p class="flow-text green-text"><i class="material-icons left" style="font-size: 2.4rem;">file_upload</i> Import Staff</p>
+                    <form action="/admin/imSA" method="post" enctype="multipart/form-data">
+                      <div class="file-field input-field">
+                        <div class="btn">
+                          <span><i class="material-icons">attach_file</i></span>
+                          <input type="file" name="fileupload" id="fileToUpload">
+                        </div>
+                        <div class="file-path-wrapper">
+                          <input class="file-path validate" type="text">
+                        </div>
+                      </div>
+                      <a href="#!" class="modal-close btn waves-effect waves-light green white-text">Cancel</a>
+                      <button class="btn waves-effect waves-light right" type="submit" name="action">Submit
+                        <i class="material-icons right">send</i>
+                      </button>
+                    </form>
+                  </div>
+                  <!-- <div class="modal-footer">
+
+                  </div> -->
+                </div>
                 <div id="mupdate" class="modal">
                     <div class="modal-content">
                         <h4>Update User Accounts</h4>

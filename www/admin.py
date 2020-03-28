@@ -1,6 +1,7 @@
 from flask import render_template,session,redirect,url_for,request,session,Blueprint,flash,escape
 from www import db, bcrypt
-import json
+import json,csv,pandas as pd
+from werkzeug.utils import secure_filename
 
 abv = Blueprint('admin',__name__,template_folder='templates/admin')
 
@@ -94,7 +95,8 @@ class Admin():
     def key_error(error):
         # abv.logger.error('Unhandled Exception: %s', (e))
         flash(u"Something went wrong, please try again!",'keyerror')
-        return f'''<script>window.history.go(-1);</script>'''
+        # return f'''<script>window.history.go(-1);</script>'''
+        return f'''{error}'''
     @abv.route('/addStaff')
     def addStaff():
         if 'userType' in session:
@@ -104,7 +106,35 @@ class Admin():
             else:
                     return redirect('/')
         else:
-            return redirect('/')        
+            return redirect('/') 
+    @abv.route('/imSA', methods=['POST'])
+    def imSA():
+        # Check if the post request has the file part
+        if 'fileupload' not in request.files:
+            flash(u"No file part!",'error')
+            return redirect('/admin/staff')
+        file = request.files['fileupload']
+        # Check if submit an empty part without filename
+        if file.filename == '':
+            flash(u"No selected file!",'error')
+            return redirect('/admin/staff')
+        ftype = file.filename.rsplit('.', 1)[1].lower()
+        if ftype == 'csv':
+            # Use pandas.read_csv() to solve .read() on flask file upload
+            data = pd.read_csv(file)
+            for i in range(0,len(data.index)):
+                db.execute(f'''INSERT INTO tbl_staff 
+                (st_fname, st_lname, st_mi, brgyCode, bday, date_hired) 
+                VALUES 
+                ('{data.loc[i]['st_fname']}','{data.loc[i][' st_lname']}','{data.loc[i][' st_mi']}','{data.loc[i][' brgyCode']}','{data.loc[i][' bday']}','{data.loc[i][' date_hired']}')
+                ''')
+                db.commit()
+            flash(u"Successfully Imported.", 'success')
+            return redirect("/admin/staff")
+            # return f'''List:{list(data)} | Data:{data[' date_created']}'''
+        else:
+            flash(u"Please upload a CSV File.",'error')
+            return redirect('/admin/staff')
     @abv.route('/dashboard')
     def admin():
         if 'userType' in session:
