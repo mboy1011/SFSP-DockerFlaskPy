@@ -12,7 +12,16 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/materializecss.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/style.css')}}">
     <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/materializecss-icons.css')}}">
+     <!-- LeafletJS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin=""/>
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+    integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+    crossorigin=""></script>
     <style>
+      #mapid { height: 180px; }
         body {
           display: flex;
           min-height: 100vh;
@@ -105,31 +114,7 @@
       </center>
     </main>
     <footer class="page-footer green">
-      <div class="container">
-        <div class="row">
-          <div class="col l6 s12">
-            <h5 class="white-text">Gingoog City Colleges, Inc.</h5>
-            <p class="grey-text text-lighten-4">Macopa St., Paz Village Subdivision
-              Gingoog City</p>
-            <p class="grey-text text-lighten-4">Call (088) 861 1432 Ext 7385</p>
-          </div>
-          <div class="col l4 offset-l2 s12">
-            <h5 class="white-text">Socail Media</h5>
-            <ul>
-              <li><a class="grey-text text-lighten-3" href="https://www.facebook.com/pg/GingoogCityCollegesInc">Facebook</a></li>
-              <li></li>
-              <li></li>
-              <li></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="footer-copyright">
-        <div class="container">
-        © 2020 School Faculty & Staff Portal
-        <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
-        </div>
-      </div>
+      {% include 'footer.html'%}
     </footer>
     <!-- MaterializeCSS -->
     <script src="{{ url_for('static',filename='assets/js/materialize-css.min.js')}}"></script>

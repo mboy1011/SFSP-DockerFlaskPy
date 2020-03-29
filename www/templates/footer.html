@@ -4,6 +4,7 @@
         <h5 class="white-text">Gingoog City Colleges, Inc.</h5>
         <p class="grey-text text-lighten-4">Macopa St., Paz Village Subdivision
         Gingoog City</p>
+        <div id="mapid"></div>
         <p class="grey-text text-lighten-4">Call (088) 861 1432 Ext 7385</p>
     </div>
     <div class="col l4 offset-l2 s12">
@@ -23,3 +24,13 @@
     <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
     </div>
 </div>
+<script>
+      // LeafletJS
+      var mymap = L.map('mapid').setView([8.82149, 125.09802], 15);
+      const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreeMap</a> contributors'
+      var marker = L.marker([8.82149, 125.09868]).addTo(mymap);
+      const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+      const tiles = L.tileLayer(tileUrl,{attribution});
+      tiles.addTo(mymap)
+      // 
+</script>
