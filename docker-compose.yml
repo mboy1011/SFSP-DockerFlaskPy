@@ -19,7 +19,7 @@ services:
     volumes: 
       - ./db:/docker-entrypoint-initdb.d
     environment:
-      # MYSQL_DATABASE: db_sfsp
+      MYSQL_DATABASE: db_sfsp
       MYSQL_ROOT_PASSWORD: gcc@2k20~#
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
