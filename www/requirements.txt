@@ -9,3 +9,5 @@ gevent
 bcrypt
 flask-bcrypt
 pandas
+qrcode
+pillow

@@ -33,118 +33,148 @@
     </header>
     <main>
     <div class="row">
-    <div id="man" class="col s12">
-    <div class="card material-table">
-        <div class="table-header">
-          <span class="table-title">User Accounts</span>
-          <div class="actions">
-              <a class="waves-effect waves-effect btn-flat modal-trigger nopadding" href="#dupdate"><i class="material-icons">delete</i></a>
-            <a href="#insertModal" class="modal-trigger waves-effect btn-flat nopadding"><i class="material-icons">person_add</i></a>
-            <a href="#" class="search-toggle waves-effect btn-flat nopadding"><i class="material-icons">search</i></a>
-          </div>
-        </div>
-        <table id="datatable" class="responsive-table">
-          <thead>
-              <tr>
-                  <th>
-                    <label>
-                      <input type="checkbox" id="mChBx" />
-                      <span>Select All</span>
-                    </label>
-                  </th>
-                  <th>ID</th>
-                  <th>Username</th>
-                  <th>Password</th>
-                  <th>Type</th>
-                  <th>Date Added</th>
-                  <th>Action</th>
-              </tr>
-          </thead>
-          <tbody>
-              {% for row in data %}
-              <tr>
-                <td>
-                  <label>
-                    <input type="checkbox" class="chBx" data-id="{{row[0]}}" />
-                    <span></span>
-                  </label>
-                </td>
-                <td>{{row[0]}}</td>
-                <td>{{row[1]}}</td>
-                <td>{{row[2]}}</td>
-                <td>
-                    {% if row[3]==1 %}
-                    Admin
-                    {% else %}
-                    User
-                    {% endif%}
-                </td>
-                <td>{{row[4]}}</td>
-                <td>
-                  <a class="waves-effect waves-light btn modal-trigger orange" href="#mupdate"><i class="material-icons white-text">edit</i></a>
-                  
-                </td>
-              </tr>
-              {% endfor %}
-          </tbody>
-      </table>
-      <!-- Modals -->
-      <div id="mupdate" class="modal">
-        <div class="modal-content">
-          <h4>Update User Accounts</h4>
-        </div>
-        <div class="modal-footer">
-          <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
-        </div>
-      </div>
-      <div id="dupdate" class="modal">
-        <div class="modal-content">
-          <h4>Delete User Accounts</h4>
-        </div>
-        <div class="modal-footer">
-          <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
-        </div>
-      </div>
-       <!-- Modal Structure -->
-      <div id="insertModal" class="modal modal-fixed-footer">
-      <form method="POST" action="/addUA">
-        <div class="modal-content">
-          <h4>Add User Accounts</h4>
-          <div class="row">
-            <div class="input-field col s12">
-              <input id="first_name" type="text" name="uname" class="validate" required>
-              <label for="first_name">Username</label>
+      <div id="man" class="col s12">
+        <div class="card material-table">
+            <div class="table-header">
+              <span class="table-title">User Accounts</span>
+              <div class="actions">
+                <a class="waves-effect waves-effect btn-flat modal-trigger nopadding" id="delUA" href="#dupdate"><i class="material-icons">delete</i></a>
+                <a href="#insertModal" class="modal-trigger waves-effect btn-flat nopadding"><i class="material-icons">person_add</i></a>
+                <a href="#" class="search-toggle waves-effect btn-flat nopadding"><i class="material-icons">search</i></a>
+              </div>
+              {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        {% if category == 'keyerror'%}
+                            <div class="card-panel red white-text">
+                                {{message}}<i class="material-icons left white-text" style="font-size: 2.2rem;">error</i>
+                                <i class="close material-icons white-text">close</i>
+                            </div>
+                        {% elif category == 'warning' %}
+                            <div class="chip orange white-text">
+                                {{message}}<i class="material-icons left white-text" style="font-size: 2.2rem;">warning</i>
+                                <i class="close material-icons white-text">close</i>
+                            </div>
+                        {% elif category == 'success' %}
+                        <div class="chip green white-text">
+                            {{message}}<i class="material-icons left white-text" style="font-size: 2.2rem;">check</i>
+                            <i class="close material-icons white-text">close</i>
+                        </div>
+                        {% else %}
+                        <div class="chip red white-text">
+                            {{message}}<i class="material-icons left white-text" style="font-size: 2.2rem;">error</i>
+                            <i class="close material-icons white-text">close</i>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                {% endwith %}
             </div>
-            <div class="input-field col s12">
-              <input id="password" type="password" name="passwd" class="validate" required>
-              <label for="password">Password</label>
+            <table id="datatable" class="responsive-table">
+              <thead>
+                  <tr>
+                      <th>
+                        <label>
+                          <input type="checkbox" id="mChBx" />
+                          <span>Select All</span>
+                        </label>
+                      </th>
+                      <th>ID</th>
+                      <th>Username</th>
+                      <th>Password</th>
+                      <th>Type</th>
+                      <th>Date Added</th>
+                      <th>Action</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for row in data %}
+                  <tr>
+                    <td>
+                      <label>
+                        <input type="checkbox" class="chBx" data-id="{{row[0]}}" />
+                        <span></span>
+                      </label>
+                    </td>
+                    <td>{{row[0]}}</td>
+                    <td>{{row[1]}}</td>
+                    <td>{{row[2]}}</td>
+                    <td>
+                        {% if row[3]==1 %}
+                        Admin
+                        {% else %}
+                        User
+                        {% endif%}
+                    </td>
+                    <td>{{row[4]}}</td>
+                    <td>
+                      <a class="waves-effect waves-light btn modal-trigger orange" href="#mupdate"><i class="material-icons white-text">edit</i></a>
+                      
+                    </td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+          <!-- Modals -->
+          <div id="mupdate" class="modal">
+            <div class="modal-content">
+              <h4>Update User Accounts</h4>
             </div>
-            <div class="input-field col s6">
-              <select name="staffid">
-                {% for row in staff %}
-                <option value="{{row[0]}}">{{row[4]}}, {{row[2]}}</option>
-                {% endfor %}
-              </select>
-              <label>Staff</label>
-            </div>
-            <div class="input-field col s6">
-              <select name="utype">
-                <option value="1">User</option>
-                <option value="0">Admin</option>
-              </select>
-              <label>User Type</label>
+            <div class="modal-footer">
+              <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
             </div>
           </div>
+          <div id="dupdate" class="modal">
+            <div class="modal-content center">
+              <h1 class=""><i class="material-icons large red-text">cancel</i></h1>
+              <h4 class="">Are you sure?</h4>
+              <p class="">Do you want to delete these records? This cannot be undone!</p>
+              <a href="#!" class="grey btn-large modal-close">Cancel</a>
+              <a id="delBtn" class="btn-large red white-text">Delete</a>
+            </div>
+            <div class="modal-footer">
+            </div>
+          </div>
+          <!-- Modal Structure -->
+          <div id="insertModal" class="modal modal-fixed-footer">
+          <form method="POST" action="/admin/addUA">
+            <div class="modal-content">
+              <h4>Add User Accounts</h4>
+              <div class="row">
+                <div class="input-field col s12">
+                  <input id="email" type="email" name="email" class="validate" required>
+                  <label for="email">Email</label>
+                </div>
+                <div class="input-field col s12">
+                  <input id="password" type="password" name="passwd" class="validate" required minlength="8">
+                  <label for="password">Password</label>
+                </div>
+                <div class="input-field col s6">
+                  <select name="staffid">
+                    {% for row in staff %}
+                    <option value="{{row[0]}}">{{row[2]}}, {{row[1]}} {{row[3]}}.</option>
+                    {% endfor %}
+                  </select>
+                  <label>Staff</label>
+                </div>
+                <div class="input-field col s6">
+                  <select name="utype">
+                    <option value="1">User</option>
+                    <option value="0">Admin</option>
+                  </select>
+                  <label>User Type</label>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer green">
+              <button class="white-text btn blue waves-effect waves-blue btn-flat" type="submit" name="addUA">Submit <i class="material-icons right">send</i></button>
+              <button class="white-text modal-close btn red waves-effect waves-red btn-flat">Cancel</button>
+            </div>
+          </form>
+          </div>
         </div>
-        <div class="modal-footer green">
-          <button class="white-text btn blue waves-effect waves-blue btn-flat" type="submit" name="addUA">Submit <i class="material-icons right">send</i></button>
-          <button class="white-text modal-close btn red waves-effect waves-red btn-flat">Cancel</button>
         </div>
-      </form>
       </div>
-    </div>
-    </div>
-    </div>
     </main>
     <footer class="page-footer green">
     {% include 'footer.html' %}
@@ -155,6 +185,8 @@
     <script src="{{ url_for('static',filename='assets/js/jquery.min.js')}}"></script>
     <script src="{{ url_for('static',filename='assets/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{ url_for('static',filename='assets/js/jq-data-material.js')}}"></script>
+    <!-- Axios -->
+    <script src="{{ url_for('static',filename='assets/js/axios.min.js')}}"></script>
     <script>
       // SideNav
     let slout = document.querySelector("#slide-out");
@@ -177,25 +209,43 @@
     M.AutoInit();
     // CheckBox
     let mChBx = document.querySelector("#mChBx");
-      let chBx = document.querySelectorAll(".chBx");
-      mChBx.addEventListener('click',function(){
-        if(mChBx.checked == true){
-          for (let i = 0; i < chBx.length; i++) {
-            chBx[i].checked = true;            
-          }
-        }else{
-          for (let i = 0; i < chBx.length; i++) {
-            chBx[i].checked = false;            
-          }
-        }
-      });
-      var check = (e)=>{
+    let chBx = document.querySelectorAll(".chBx");
+    mChBx.addEventListener('click',function(){
+      if(mChBx.checked == true){
         for (let i = 0; i < chBx.length; i++) {
-          if(chBx[i].checked == true){
-            console.log(chBx[i].dataset.id);
-          }          
+          chBx[i].checked = true;            
+        }
+      }else{
+        for (let i = 0; i < chBx.length; i++) {
+          chBx[i].checked = false;            
         }
       }
+    });
+    let modal = document.querySelectorAll(".modal");
+    let delData = [];
+    let check = (e)=>{
+      for (let i = 0; i < chBx.length; i++) {
+        if(chBx[i].checked == true){
+          delData.push(chBx[i].dataset.id);
+        }          
+      }
+    }
+    let delBtn = document.querySelector("#delBtn");
+    delBtn.addEventListener("click",(e)=>{
+      check();
+      if(delData.length==0){
+        M.toast({html:'Please check something...'});
+        modal[1].M_Modal.close();
+      }else{
+        axios.post('/admin/delUA',{delData:delData}).then((res)=>{
+          if(res.data.status=='ok'){
+            location.reload(true)
+          }
+        }).catch((err)=>{
+          console.log(err);
+        })
+      }
+    })
     // 
     </script>
 </body>

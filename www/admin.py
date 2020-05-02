@@ -60,6 +60,16 @@ class Admin():
             flash(u"Successfully Registered!",'success')
         # flash(u"Failed to Register!",'error')
         return redirect('/admin/addStaff')
+    @abv.route('/delUA',methods=['POST'])
+    def delUA():
+        data = request.get_json(silent=True)
+        ids = data['delData']
+        for i in ids:
+            query = db.execute(f"DELETE FROM tbl_user_accounts WHERE ua_id={i}")
+            db.commit()
+        flash("Successfully Deleted!","success")
+        datas = {'status':'ok'}
+        return f"{json.dumps(dict(datas))}"
     @abv.route('/delSA',methods=['POST'])
     def delSA():
         data = request.get_json(silent=True)
@@ -106,7 +116,26 @@ class Admin():
             else:
                     return redirect('/')
         else:
-            return redirect('/') 
+            return redirect('/')
+    @abv.route('/addUA', methods=['POST'])
+    def addUA():
+        em = escape(request.form['email'])
+        pw = escape(request.form['passwd'])
+        sid = escape(request.form['staffid'])
+        ut = escape(request.form['utype'])
+        query = db.execute(f"SELECT u_email FROM tbl_user_accounts WHERE u_email='{em}'").fetchone()
+        if not query:
+            pw_hash = bcrypt.generate_password_hash(pw).decode('utf-8')
+            db.execute(f'''INSERT INTO tbl_user_accounts 
+                (u_email,u_pass,u_type,staff_id)
+                VALUES ('{em}','{pw_hash}','{ut}','{sid}')
+            ''')
+            db.commit()
+            flash(u"Successfully Imported.", 'success')
+            return redirect("/admin/users")
+        else:
+            flash(u"Email already used!", 'warning')
+            return redirect("/admin/users")
     @abv.route('/imSA', methods=['POST'])
     def imSA():
         # Check if the post request has the file part
@@ -152,8 +181,9 @@ class Admin():
     def users():
         if 'userType' in session:
             if session['userType']==1:
-                data = db.execute("SELECT * FROm tbl_user_accounts").fetchall()
-                return render_template('user.html',data=data)
+                data = db.execute("SELECT * FROM tbl_user_accounts").fetchall()
+                staff = db.execute("SELECT staff_id,st_fname,st_lname,st_mi FROM tbl_staff")
+                return render_template('user.html',data=data,staff=staff)
             else:
                 return redirect('/')
         else:
